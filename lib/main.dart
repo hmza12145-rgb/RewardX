@@ -12,7 +12,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   if (!kIsWeb) {
-    await MobileAds.instance.initialize();
   }
   runApp(const RewardXApp());
 }
