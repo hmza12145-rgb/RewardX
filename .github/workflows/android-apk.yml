@@ -37,14 +37,25 @@ jobs:
         run: flutter pub get
 
       - name: Show signing SHA
-      run: |
-        mkdir -p ~/.android
-        if [ ! -f ~/.android/debug.keystore ]; then
-          keytool -genkeypair -v -keystore ~/.android/debug.keystore -storepass android -keypass android -alias androiddebugkey -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
-        fi
-        keytool -list -v -keystore ~/.android/debug.keystore -storepass android -alias androiddebugkey | grep -E "SHA1:|SHA256:"
+        run: |
+          mkdir -p ~/.android
+          if [ ! -f ~/.android/debug.keystore ]; then
+            keytool -genkeypair -v \
+              -keystore ~/.android/debug.keystore \
+              -storepass android \
+              -alias androiddebugkey \
+              -keypass android \
+              -keyalg RSA \
+              -keysize 2048 \
+              -validity 10000 \
+              -dname "CN=Android Debug,O=Android,C=US"
+          fi
+          keytool -list -v \
+            -keystore ~/.android/debug.keystore \
+            -storepass android \
+            -alias androiddebugkey | grep -E 'SHA1:|SHA256:'
 
-    - name: Build APK
+      - name: Build APK
         run: flutter build apk --release
 
       - name: Upload APK
