@@ -16,7 +16,6 @@ Future<void> main() async {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    await MobileAds.instance.initialize();
     runApp(const RewardXApp());
   } catch (e) {
     runApp(StartupErrorApp(error: e.toString()));
