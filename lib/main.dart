@@ -6,7 +6,6 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -169,41 +168,6 @@ class _SignInPageState extends State<SignInPage> {
 }
 
 
-Future<void> showRewardedVideoAd(BuildContext context) async {
-  await RewardedAd.load(
-    adUnitId: 'ca-app-pub-3940256099942544/5224354917',
-    request: const AdRequest(),
-    rewardedAdLoadCallback: RewardedAdLoadCallback(
-      onAdLoaded: (RewardedAd ad) {
-        ad.fullScreenContentCallback = FullScreenContentCallback(
-          onAdDismissedFullScreenContent: (Ad ad) {
-            ad.dispose();
-          },
-          onAdFailedToShowFullScreenContent: (Ad ad, AdError error) {
-            ad.dispose();
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Ad could not be shown.')),
-            );
-          },
-        );
-
-        ad.show(
-          onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Rewarded ad completed!')),
-            );
-          },
-        );
-      },
-      onAdFailedToLoad: (LoadAdError error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Rewarded ad is not available right now.')),
-        );
-      },
-    ),
-  );
-}
-
 class Dashboard extends StatelessWidget {
   const Dashboard({super.key});
 
@@ -246,7 +210,6 @@ class Dashboard extends StatelessWidget {
               title: const Text('Rewarded video ads'),
               subtitle: const Text('Watch a video to earn points.'),
               trailing: const Icon(Icons.play_circle_outline),
-              onTap: () => showRewardedVideoAd(context),
             ),
           ),
           const Card(child: ListTile(
